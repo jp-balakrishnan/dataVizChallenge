@@ -426,7 +426,7 @@ comparison_data = pd.merge(
     on='home', how='inner'
 )
 
-# Create two-facet visualization comparing 2010 and 2021
+# Create two-facet visualization comparing 2010 and 2021 for each stadium
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 5))
 
 # Sort each dataset by its own runs (ascending for horizontal bar charts)
