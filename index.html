@@ -288,7 +288,7 @@ First few rows of 2010 data:
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Data Aggregation Strategy</strong> - How many games are in the dataset? Why do we aggregate individual games into stadium averages before we start the visualization process?</p>
-<div id="21bc28ea" class="cell" data-message="false" data-execution_count="3">
+<div id="8d675c0f" class="cell" data-message="false" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2010 data shape:"</span>, df2010.shape)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2021 data shape:"</span>, df2021.shape)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">2010 data columns:"</span>, df2010.columns.tolist())</span>
@@ -310,7 +310,7 @@ First few rows of 2010 data:
 </div>
 </div>
 <p>There are total of 4859 games from 2010 and 2021 seasons. 2430 games in 2010 and 2429 games in 2021.</p>
-<div id="4105aca1" class="cell" data-message="false" data-execution_count="4">
+<div id="0e6ad3db" class="cell" data-message="false" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>home_run_2010 <span class="op">=</span> df2010.groupby(<span class="st">'home'</span>).size().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(home_run_2010.head(<span class="dv">3</span>))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -495,7 +495,7 @@ Colorado is 20.8% above league average</code></pre>
 <li>Is the annotation on the visualization helpful? Can you fix its placement? The annotation is helpful and is placed in a good location. It is helpful because it allows us to see that Colorado is the most run-friendly stadium in Major League Baseball. It can be fixed by placing it in a better location.</li>
 </ul>
 <p>*** Fix the annotation placement ***</p>
-<div id="192ab8d6" class="cell" data-message="false" data-execution_count="7">
+<div id="f3ea6a02" class="cell" data-message="false" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix the annotation placement</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="ss">f"COL: </span><span class="sc">{</span>colorado_runs<span class="sc">:.2f}</span><span class="ss"> runs/game"</span>, </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>            xy<span class="op">=</span>(colorado_runs, colorado_index), </span>
@@ -571,8 +571,8 @@ Colorado is 20.8% above league average</code></pre>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">'home'</span>, how<span class="op">=</span><span class="st">'inner'</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two-facet visualization comparing 2010 and 2021</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two-facet visualization comparing 2010 and 2021 for each stadium</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort each dataset by its own runs (ascending for horizontal bar charts)</span></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>data_2010_sorted <span class="op">=</span> comparison_data.sort_values(<span class="st">'runs_2010'</span>, ascending<span class="op">=</span><span class="va">True</span>)</span>
@@ -605,37 +605,40 @@ Colorado is 20.8% above league average</code></pre>
 <span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>colorado_runs_2010 <span class="op">=</span> data_2010_sorted[data_2010_sorted.home <span class="op">==</span> <span class="st">"COL"</span>][<span class="st">"runs_2010"</span>].iloc[<span class="dv">0</span>]</span>
 <span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>colorado_runs_2021 <span class="op">=</span> data_2021_sorted[data_2021_sorted.home <span class="op">==</span> <span class="st">"COL"</span>][<span class="st">"runs_2021"</span>].iloc[<span class="dv">0</span>]</span>
 <span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Add legend</span></span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>colorado_bar <span class="op">=</span> plt.Rectangle((<span class="dv">0</span>,<span class="dv">0</span>),<span class="dv">1</span>,<span class="dv">1</span>, color<span class="op">=</span><span class="st">"darkorchid"</span>, label<span class="op">=</span><span class="st">"Colorado Rockies"</span>)</span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>other_bar <span class="op">=</span> plt.Rectangle((<span class="dv">0</span>,<span class="dv">0</span>),<span class="dv">1</span>,<span class="dv">1</span>, color<span class="op">=</span><span class="st">"lightgrey"</span>, label<span class="op">=</span><span class="st">"Other Stadiums"</span>)</span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>fig.legend(handles<span class="op">=</span>[colorado_bar, other_bar], loc<span class="op">=</span><span class="st">'lower right'</span>, frameon<span class="op">=</span><span class="va">True</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Set consistent x-axis limits for fair comparison</span></span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>max_runs <span class="op">=</span> <span class="bu">max</span>(data_2010_sorted.runs_2010.<span class="bu">max</span>(), data_2021_sorted.runs_2021.<span class="bu">max</span>())</span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>ax1.set_xlim(<span class="dv">0</span>, max_runs <span class="op">*</span> <span class="fl">1.1</span>)</span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>ax2.set_xlim(<span class="dv">0</span>, max_runs <span class="op">*</span> <span class="fl">1.1</span>)</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Set consistent x-axis limits for fair comparison</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>max_runs <span class="op">=</span> <span class="bu">max</span>(data_2010_sorted.runs_2010.<span class="bu">max</span>(), data_2021_sorted.runs_2021.<span class="bu">max</span>())</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>ax1.set_xlim(<span class="dv">0</span>, max_runs <span class="op">*</span> <span class="fl">1.1</span>)</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>ax2.set_xlim(<span class="dv">0</span>, max_runs <span class="op">*</span> <span class="fl">1.1</span>)</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Add legend</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>colorado_bar <span class="op">=</span> plt.Rectangle((<span class="dv">0</span>,<span class="dv">0</span>),<span class="dv">1</span>,<span class="dv">1</span>, color<span class="op">=</span><span class="st">"darkorchid"</span>, label<span class="op">=</span><span class="st">"Colorado Rockies"</span>)</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>other_bar <span class="op">=</span> plt.Rectangle((<span class="dv">0</span>,<span class="dv">0</span>),<span class="dv">1</span>,<span class="dv">1</span>, color<span class="op">=</span><span class="st">"lightgrey"</span>, label<span class="op">=</span><span class="st">"Other Stadiums"</span>)</span>
 <span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Add title</span></span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Total Runs for 2010 and 2021 for Each Stadium"</span>)</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="co"># update legend position to display in the bottom center of the figure after the plots are created</span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>fig.legend(handles<span class="op">=</span>[colorado_bar, other_bar], loc<span class="op">=</span><span class="st">'lower center'</span>, frameon<span class="op">=</span><span class="va">True</span>, fontsize<span class="op">=</span><span class="dv">9</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the visualization</span></span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(bottom<span class="op">=</span><span class="fl">0.1</span>)  <span class="co"># Make room for legend</span></span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Print comparison statistics</span></span>
-<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Colorado Performance Comparison:"</span>)</span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2010: </span><span class="sc">{</span>colorado_runs_2010<span class="sc">:.2f}</span><span class="ss"> runs/game"</span>)</span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2021: </span><span class="sc">{</span>colorado_runs_2021<span class="sc">:.2f}</span><span class="ss"> runs/game"</span>)</span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Change: </span><span class="sc">{</span>colorado_runs_2021 <span class="op">-</span> colorado_runs_2010<span class="sc">:+.2f}</span><span class="ss"> runs/game"</span>)</span>
-<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"League Average 2010: </span><span class="sc">{</span>data_2010_sorted<span class="sc">.</span>runs_2010<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"League Average 2021: </span><span class="sc">{</span>data_2021_sorted<span class="sc">.</span>runs_2021<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Colorado is </span><span class="sc">{</span>((colorado_runs_2021 <span class="op">/</span> data_2021_sorted.runs_2021.mean()) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% above league average in 2021"</span>)</span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Colorado is </span><span class="sc">{</span>((colorado_runs_2010 <span class="op">/</span> data_2010_sorted.runs_2010.mean()) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% above league average in 2010"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Add title</span></span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Total Runs for 2010 and 2021 for Each Stadium"</span>)</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the visualization</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(bottom<span class="op">=</span><span class="fl">0.15</span>)  <span class="co"># Make room for legend at bottom</span></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Print comparison statistics</span></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Colorado Performance Comparison:"</span>)</span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2010: </span><span class="sc">{</span>colorado_runs_2010<span class="sc">:.2f}</span><span class="ss"> runs/game"</span>)</span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2021: </span><span class="sc">{</span>colorado_runs_2021<span class="sc">:.2f}</span><span class="ss"> runs/game"</span>)</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Change: </span><span class="sc">{</span>colorado_runs_2021 <span class="op">-</span> colorado_runs_2010<span class="sc">:+.2f}</span><span class="ss"> runs/game"</span>)</span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"League Average 2010: </span><span class="sc">{</span>data_2010_sorted<span class="sc">.</span>runs_2010<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"League Average 2021: </span><span class="sc">{</span>data_2021_sorted<span class="sc">.</span>runs_2021<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Colorado is </span><span class="sc">{</span>((colorado_runs_2021 <span class="op">/</span> data_2021_sorted.runs_2021.mean()) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% above league average in 2021"</span>)</span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Colorado is </span><span class="sc">{</span>((colorado_runs_2010 <span class="op">/</span> data_2010_sorted.runs_2010.mean()) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% above league average in 2010"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/advanced-oo-techniques-output-1.png" id="advanced-oo-techniques" width="670" height="484" class="figure-img"></p>
+<p><img src="index_files/figure-html/advanced-oo-techniques-output-1.png" id="advanced-oo-techniques" width="758" height="484" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -661,8 +664,17 @@ Colorado is 20.9% above league average in 2010</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Question 1: Using Subplot Layout</strong> - Create a two-facet visualization that shows the total runs for 2010 and 2021 for each stadium in a single figure. Highlight Colorado in the visualization.</p>
-<p><strong>Question 2: Explanation of the Visualization</strong> - Ask AI To Add A Paragraph Here To Explain The Visualization - Does AI come to the right conclusion? If not, why not?</p>
+<p><strong>Question 1: Using Subplot Layout</strong> - Create a two-facet visualization that shows the total runs for 2010 and 2021 for each stadium in a single figure. Highlight Colorado in the visualization. Answer: Created the visualization and it is shown above.</p>
+<p><strong>Question 2: Explanation of the Visualization</strong> - Ask AI To Add A Paragraph Here To Explain The Visualization</p>
+<ul>
+<li><p><strong>Summary of the Visualization:</strong> This side-by-side comparison reveals Colorado’s dominant run-friendliness across 2010 and 2021. Coors Field consistently leads all MLB stadiums in average runs per game, confirming its altitude advantage as the most hitter-friendly ballpark in baseball. The visualization ranks every stadium by total runs, showing not just Colorado’s position, but the entire league’s spectrum—from the highest-scoring environments (coinciding with Colorado) down to the most pitcher-friendly parks. By tracking both years, we can identify which teams’ home parks rank closest to Colorado (high-run environments) versus those furthest away (low-run, pitcher-friendly parks). The gap between Colorado and league average reveals the magnitude of Coors Field’s scoring advantage, while the overall distribution shows how teams are distributed across the scoring spectrum. This comparison across 2010 vs 2021 helps reveal era effects, rule changes, and competitive balance shifts that impact league-wide run rates over time.</p>
+<p><strong>Notable Stadium Comparisons:</strong></p>
+<ul>
+<li><strong>Camden Yards (Orioles)</strong>: Known as one of baseball’s most influential modern ballparks, Camden Yards typically ranks near the middle of the run-friendliness spectrum. Its dimensions and design create a relatively neutral environment for scoring compared to Colorado’s extreme altitude advantage. This makes it an interesting benchmark when evaluating whether Colorado’s scoring environment is truly exceptional versus simply above-average.</li>
+<li><strong>Fenway Park (Red Sox)</strong>: One of baseball’s most iconic venues, Fenway’s unusual dimensions and Green Monster create a unique scoring profile. Located near the bottom of the run-friendliness rankings (being a pitcher-friendly park), Fenway provides a sharp contrast to Colorado—showing how ballpark design can significantly suppress scoring despite being in a hitter-friendly era. This comparison between Fenway (low-run) and Colorado (high-run) illustrates the dramatic range of scoring environments across MLB stadiums.</li>
+</ul></li>
+<li><p>Does AI come to the right conclusion? If not, why not? Initially, the AI explained about plot and more of technical plot explantion than games and stadium aspects; After giving more context and instructions, the AI came to the better conclusion. AI initially was not coming to the right conclusion because it was not given enough context and instructions.</p></li>
+</ul>
 </div>
 </div>
 </section>
@@ -756,7 +768,7 @@ Colorado is 20.9% above league average in 2010</code></pre>
 <li><label><input type="checkbox">Document rendered to HTML successfully</label></li>
 <li><label><input type="checkbox">HTML files uploaded to your repository</label></li>
 <li><label><input type="checkbox">GitHub Pages enabled and working</label></li>
-<li><label><input type="checkbox">Site accessible at <code>https://[your-username].github.io/dataVizChallenge/</code></label></li>
+<li><label><input type="checkbox">Site accessible at <code>https://jp-balakrishnan.github.io/dataVizChallenge/</code></label></li>
 </ul>
 <p><strong>85% Grade Requirements:</strong></p>
 <ul class="task-list">
